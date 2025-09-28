@@ -1,844 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Online Viewer - Test, Preview & Edit HTML Code Live</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Free online HTML viewer and editor. Test, preview, and edit HTML code live in your browser. No downloads required. Perfect for web developers and designers.">
-    <meta name="keywords" content="HTML viewer, HTML editor, online HTML, HTML preview, test HTML, web development, HTML code editor">
-    <meta name="author" content="HTML Online Viewer">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="HTML Online Viewer - Test & Preview HTML Code">
-    <meta property="og:description" content="Free online HTML viewer and editor. Test your HTML code instantly in the browser.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="HTML Online Viewer">
-    <meta name="twitter:description" content="Free online HTML viewer and editor for web developers">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
-    
-    <!-- Google AdSense Code (Replace with your publisher ID) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX"
-            crossorigin="anonymous"></script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 170px;
-            background: #2c3e50;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-        
-        .sidebar-header {
-            padding: 15px;
-            background: #34495e;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-            border-bottom: 1px solid #1a252f;
-        }
-        
-        .sidebar-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid #34495e;
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-        
-        .sidebar-item:hover {
-            background: #34495e;
-        }
-        
-        .sidebar-item.active {
-            background: #3498db;
-        }
-        
-        .sidebar-footer {
-            margin-top: auto;
-            padding: 15px;
-            font-size: 11px;
-            color: #bdc3c7;
-            text-align: center;
-            border-top: 1px solid #34495e;
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        /* Top Ad Banner */
-        .top-ad {
-            height: 90px;
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 14px;
-        }
-        
-        /* Editor Area */
-        .editor-container {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
-        
-        .code-section {
-            width: 50%;
-            background: white;
-            border-right: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .preview-section {
-            width: 50%;
-            background: white;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .section-header {
-            background: #ecf0f1;
-            padding: 10px 15px;
-            font-size: 13px;
-            font-weight: bold;
-            color: #2c3e50;
-            border-bottom: 1px solid #bdc3c7;
-        }
-        
-        .code-editor {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            padding: 15px;
-            resize: none;
-            line-height: 1.4;
-            background: #fafafa;
-        }
-        
-        .preview-frame {
-            flex: 1;
-            border: none;
-            background: white;
-        }
-        
-        /* Right Sidebar Ad */
-        .right-sidebar {
-            width: 160px;
-            background: #fff;
-            border-left: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .right-ad {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 12px;
-            margin: 10px;
-            border: 1px dashed #ccc;
-            background: #f9f9f9;
-        }
-        
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-        
-        .modal-content {
-            background: white;
-            margin: 10% auto;
-            padding: 30px;
-            width: 500px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .close {
-            cursor: pointer;
-            font-size: 24px;
-            font-weight: bold;
-            color: #aaa;
-        }
-        
-        .close:hover {
-            color: #000;
-        }
-        
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            margin: 5px;
-        }
-        
-        .btn-primary {
-            background: #3498db;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: #95a5a6;
-            color: white;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        
-        /* File Input Styles */
-        .file-input {
-            display: none;
-        }
-        
-        .file-label {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #3498db;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 10px 0;
-        }
-        
-        .file-label:hover {
-            background: #2980b9;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 60px;
-            }
-            
-            .sidebar-item span {
-                display: none;
-            }
-            
-            .sidebar-header {
-                font-size: 10px;
-            }
-            
-            .right-sidebar {
-                display: none;
-            }
-            
-            .modal-content {
-                width: 90%;
-                margin: 5% auto;
-            }
-        }
-        
-        /* Syntax highlighting (basic) */
-        .highlight {
-            background: #fff3cd !important;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Online Viewer - Pro Edition</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {
+      font-family: Arial, sans-serif;
+      background:#f5f5f5;
+      display:flex;
+      height:100vh;
+      overflow:hidden;
+    }
+    body.dark { background:#1e1e1e; color:#eee; }
+
+    /* Sidebar */
+    .sidebar {width:180px;background:#2c3e50;color:white;display:flex;flex-direction:column;}
+    .sidebar-header {padding:15px;text-align:center;background:#34495e;font-weight:bold;}
+    .sidebar-item {padding:10px 15px;border-bottom:1px solid #34495e;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;}
+    .sidebar-item:hover {background:#34495e;}
+    .sidebar-footer {margin-top:auto;padding:10px;font-size:11px;color:#bdc3c7;text-align:center;}
+
+    /* Main */
+    .main-content {flex:1;display:flex;flex-direction:column;}
+    .top-ad {height:50px;display:flex;align-items:center;justify-content:center;background:#fff;border-bottom:1px solid #ddd;color:#666;font-size:14px;}
+    .editor-container {flex:1;display:flex;overflow:hidden;}
+
+    /* Tabs */
+    .tabs {display:flex;border-bottom:1px solid #ccc;background:#ecf0f1;}
+    .tabs button {flex:1;padding:8px;border:none;cursor:pointer;background:#ecf0f1;}
+    .tabs button.active {background:#ddd;font-weight:bold;}
+
+    /* Editor / Preview */
+    .code-section {width:50%;display:flex;flex-direction:column;}
+    #dragbar {width:5px;cursor:col-resize;background:#ccc;}
+    .preview-section {flex:1;display:flex;flex-direction:column;}
+    .section-header {padding:10px;font-size:13px;font-weight:bold;border-bottom:1px solid #ccc;background:#ecf0f1;}
+    textarea {flex:1;border:none;outline:none;font-family:monospace;font-size:12px;padding:10px;resize:none;background:#fafafa;}
+    body.dark textarea {background:#2d2d2d;color:#eee;}
+    iframe {flex:1;border:none;}
+
+    @media(max-width:768px){.sidebar{width:60px}.sidebar-item span:last-child{display:none}#dragbar{display:none}.code-section,.preview-section{width:100%}}
+  </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">HTML Online Viewer</div>
-        
-        <div class="sidebar-item" onclick="previewFullPage()">
-            <span>👁</span> <span>Preview (Full page)</span>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">HTML Viewer</div>
+    <div class="sidebar-item" onclick="toggleDarkMode()">🌙 <span>Dark Mode</span></div>
+    <div class="sidebar-item" onclick="copyCode()">📋 <span>Copy Code</span></div>
+    <div class="sidebar-item" onclick="insertSnippet('button')">🔘 <span>Insert Button</span></div>
+    <div class="sidebar-item" onclick="insertSnippet('form')">📄 <span>Insert Form</span></div>
+    <div class="sidebar-item" onclick="insertSnippet('navbar')">📑 <span>Insert Navbar</span></div>
+    <div class="sidebar-item"><input type="color" onchange="insertColor(this.value)"></div>
+    <div class="sidebar-item" onclick="validateCode()">✅ <span>Validate</span></div>
+    <div class="sidebar-item" onclick="exportFile()">📤 <span>Export HTML</span></div>
+    <div class="sidebar-item" onclick="exportZip()">🗜 <span>Export ZIP</span></div>
+    <div class="sidebar-footer">© 2025 OnlineViewer.net</div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div class="top-ad">Advertisement</div>
+    <div class="editor-container">
+      <!-- Code Section -->
+      <div class="code-section" id="editorPane">
+        <div class="tabs">
+          <button id="tab-html" onclick="switchTab('html')">HTML</button>
+          <button id="tab-css" onclick="switchTab('css')">CSS</button>
+          <button id="tab-js" onclick="switchTab('js')">JS</button>
         </div>
-        
-        <div class="sidebar-item" onclick="highlightCode()">
-            <span>🎨</span> <span>Highlight (Full page)</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="formatCode()">
-            <span>📝</span> <span>Format</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="expandAll()">
-            <span>📂</span> <span>Expand all</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="collapseAll()">
-            <span>📁</span> <span>Collapse all</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="loadSample()">
-            <span>📄</span> <span>Sample</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="clearEditor()">
-            <span>🗑</span> <span>Clear</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="importFile()">
-            <span>📥</span> <span>Import</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="exportFile()">
-            <span>📤</span> <span>Export</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="showPrivacySettings()">
-            <span>🔒</span> <span>Privacy settings</span>
-        </div>
-        
-        <div class="sidebar-item" onclick="showAbout()">
-            <span>ℹ</span> <span>About</span>
-        </div>
-        
-        <div class="sidebar-footer">
-            © 2025 OnlineViewer.net
-        </div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Top Advertisement Banner -->
-        <div class="top-ad">
-            <!-- Google AdSense Banner Ad -->
-            <ins class="adsbygoogle"
-                 style="display:block; width:728px; height:90px;"
-                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
-                 data-ad-slot="XXXXXXXXXX"
-                 data-ad-format="banner"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            <span style="color:#999;">Advertisement</span>
-        </div>
-        
-        <!-- Editor Container -->
-        <div class="editor-container">
-            <!-- Code Section -->
-            <div class="code-section">
-                <div class="section-header">Put your HTML text here</div>
-                <textarea class="code-editor" id="htmlCode" placeholder="Enter your HTML code here..."><!DOCTYPE html>
+        <textarea id="htmlCode"><!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample HTML Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .container {
-            text-align: center;
-            background: rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        .btn {
-            background: white;
-            color: #667eea;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Sample Page</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to HTML Viewer!</h1>
-        <p>Edit the HTML code on the left and see the live preview here.</p>
-        <button class="btn" onclick="alert('Hello from HTML Viewer!')">Click Me!</button>
-    </div>
+  <h1>Hello World</h1>
 </body>
 </html></textarea>
-            </div>
-            
-            <!-- Preview Section -->
-            <div class="preview-section">
-                <div class="section-header">Preview</div>
-                <iframe class="preview-frame" id="preview"></iframe>
-            </div>
-        </div>
+        <textarea id="cssCode" style="display:none;">body {font-family:Arial;}</textarea>
+        <textarea id="jsCode" style="display:none;">console.log('Hello JS')</textarea>
+      </div>
+      <div id="dragbar"></div>
+      <!-- Preview -->
+      <div class="preview-section">
+        <div class="section-header">Preview</div>
+        <iframe id="preview"></iframe>
+      </div>
     </div>
-    
-    <!-- Hidden File Input -->
-    <input type="file" id="fileInput" class="file-input" accept=".html,.htm,.txt" onchange="handleFileImport(event)">
-    
-    <!-- About Modal -->
-    <div id="aboutModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>About HTML Online Viewer</h3>
-                <span class="close" onclick="closeModal('aboutModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p><strong>HTML Online Viewer</strong> is a free, fast, and secure online HTML editor and viewer.</p>
-                <br>
-                <p><strong>Features:</strong></p>
-                <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li>Real-time HTML preview</li>
-                    <li>Syntax highlighting</li>
-                    <li>Code formatting</li>
-                    <li>Import/Export HTML files</li>
-                    <li>Mobile responsive</li>
-                    <li>100% client-side processing</li>
-                </ul>
-                <br>
-                <p><strong>Version:</strong> 2.1.0</p>
-                <p><strong>Last Updated:</strong> 2025</p>
-                <br>
-                <div style="text-align: center;">
-                    <button class="btn btn-primary" onclick="closeModal('aboutModal')">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Privacy Settings Modal -->
-    <div id="privacyModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Privacy Settings</h3>
-                <span class="close" onclick="closeModal('privacyModal')">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p><strong>Your Privacy is Important</strong></p>
-                <br>
-                <p>✅ All code processing happens in your browser</p>
-                <p>✅ No data is sent to our servers</p>
-                <p>✅ No tracking or analytics on your code</p>
-                <p>✅ Your HTML code remains completely private</p>
-                <br>
-                <p><strong>Data Usage:</strong></p>
-                <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li>We use cookies for preferences only</li>
-                    <li>Google AdSense may use cookies for ads</li>
-                    <li>No personal information is collected</li>
-                </ul>
-                <br>
-                <div style="text-align: center;">
-                    <button class="btn btn-primary" onclick="closeModal('privacyModal')">Got it</button>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "HTML Online Viewer",
-        "description": "Free online HTML viewer and editor. Test, preview, and edit HTML code live in your browser.",
-        "url": "",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "HTML Online Viewer"
-        }
+  <script>
+    // Switch Tabs
+    function switchTab(tab){
+      ['html','css','js'].forEach(t=>{
+        document.getElementById(t+'Code').style.display = (t===tab)?'block':'none';
+        document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+      });
     }
-    </script>
+    switchTab('html');
 
-    <!-- JavaScript -->
-    <script>
-        // Auto-run code on load
-        document.addEventListener('DOMContentLoaded', function() {
-            updatePreview();
-            
-            // Auto-update preview as user types (with debounce)
-            document.getElementById('htmlCode').addEventListener('input', debounce(updatePreview, 300));
-        });
+    // Update Preview
+    function updatePreview(){
+      const html=document.getElementById('htmlCode').value;
+      const css=`<style>${document.getElementById('cssCode').value}</style>`;
+      const js=`<script>${document.getElementById('jsCode').value}<\/script>`;
+      const code=`${html}${css}${js}`;
+      const blob=new Blob([code],{type:'text/html'});
+      const url=URL.createObjectURL(blob);
+      document.getElementById('preview').src=url;
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
 
-        // Debounce function to limit preview updates
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
+    // Auto Save + Preview
+    ['htmlCode','cssCode','jsCode'].forEach(id=>{
+      const el=document.getElementById(id);
+      el.value=localStorage.getItem(id)||el.value;
+      el.addEventListener('input',()=>{
+        localStorage.setItem(id,el.value);
+        updatePreview();
+      });
+    });
+    document.addEventListener('DOMContentLoaded',updatePreview);
 
-        // Update the preview iframe
-        function updatePreview() {
-            const code = document.getElementById('htmlCode').value;
-            const preview = document.getElementById('preview');
-            const blob = new Blob([code], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            preview.src = url;
-            
-            // Clean up old blob URLs
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
-        }
+    // Dark Mode
+    function toggleDarkMode(){
+      document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode',document.body.classList.contains('dark'));
+    }
+    if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark');
 
-        // Preview in full page (new tab)
-        function previewFullPage() {
-            const code = document.getElementById('htmlCode').value;
-            const blob = new Blob([code], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
-        }
+    // Resizable Panels
+    const dragbar=document.getElementById('dragbar');
+    const editorPane=document.getElementById('editorPane');
+    dragbar.addEventListener('mousedown',e=>{
+      document.onmousemove=e=>{editorPane.style.width=e.pageX+'px';};
+      document.onmouseup=()=>document.onmousemove=null;
+    });
 
-        // Basic syntax highlighting
-        function highlightCode() {
-            const editor = document.getElementById('htmlCode');
-            const text = editor.value;
-            
-            // Simple highlighting by adding background color temporarily
-            editor.style.background = '#fff3cd';
-            setTimeout(() => {
-                editor.style.background = '#fafafa';
-            }, 2000);
-            
-            // You could implement more sophisticated highlighting here
-            alert('Basic highlighting applied! (More advanced highlighting can be added with libraries like Prism.js)');
-        }
+    // Snippets
+    function insertSnippet(type){
+      const editor=document.getElementById('htmlCode');
+      const snippets={
+        button:`<button class='btn'>Click me</button>`,
+        form:`<form><input type='text' placeholder='Name'><button>Submit</button></form>`,
+        navbar:`<nav><a href='#'>Home</a> | <a href='#'>About</a></nav>`
+      };
+      editor.value+='\n'+snippets[type];
+      updatePreview();
+    }
 
-        // Format HTML code (basic)
-        function formatCode() {
-            const editor = document.getElementById('htmlCode');
-            let code = editor.value;
-            
-            // Basic formatting - this is a simple implementation
-            // For production, you'd want to use a proper HTML formatter
-            code = code.replace(/></g, '>\n<');
-            code = code.replace(/^\s*\n/gm, '');
-            
-            // Add basic indentation
-            const lines = code.split('\n');
-            let indentLevel = 0;
-            const formatted = lines.map(line => {
-                const trimmed = line.trim();
-                if (trimmed.match(/<\/\w+>/)) {
-                    indentLevel--;
-                }
-                const indented = '  '.repeat(Math.max(0, indentLevel)) + trimmed;
-                if (trimmed.match(/<\w+[^>]*>/)) {
-                    indentLevel++;
-                }
-                return indented;
-            }).join('\n');
-            
-            editor.value = formatted;
-            updatePreview();
-        }
+    // Insert Color
+    function insertColor(color){
+      const editor=document.getElementById('htmlCode');
+      editor.value+=color;
+      updatePreview();
+    }
 
-        // Expand all (placeholder - would expand collapsed code sections)
-        function expandAll() {
-            alert('Expand all functionality - typically used for collapsible code sections');
-        }
+    // Copy Code
+    function copyCode(){
+      const text=document.getElementById('htmlCode').value;
+      navigator.clipboard.writeText(text).then(()=>alert('Code copied!'));
+    }
 
-        // Collapse all (placeholder - would collapse code sections)
-        function collapseAll() {
-            alert('Collapse all functionality - typically used for collapsible code sections');
-        }
+    // Validate Code
+    async function validateCode(){
+      const code=document.getElementById('htmlCode').value;
+      const res=await fetch('https://validator.w3.org/nu/?out=json',{method:'POST',headers:{'Content-Type':'text/html; charset=utf-8'},body:code});
+      const data=await res.json();
+      alert(data.messages.map(m=>`${m.type}: ${m.message}`).join('\n')||'No issues found');
+    }
 
-        // Load sample HTML
-        function loadSample() {
-            const samples = [
-                // Current sample
-                document.getElementById('htmlCode').value,
-                
-                // Modern card sample
-                `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Card Design</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 40px;
-            background: #0f0f23;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .card {
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            text-align: center;
-            color: white;
-            max-width: 400px;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-10px);
-        }
-        .card h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .card p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            opacity: 0.8;
-        }
-        .btn {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body>
-    <div class="card">
-        <h2>Modern Card</h2>
-        <p>This is a beautiful modern card with gradient effects and smooth animations.</p>
-        <button class="btn" onclick="alert('Modern design!')">Interact</button>
-    </div>
-</body>
-</html>`,
+    // Export HTML
+    function exportFile(){
+      const code=document.getElementById('htmlCode').value;
+      const blob=new Blob([code],{type:'text/html'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;a.download='my-html-file.html';a.click();
+      URL.revokeObjectURL(url);
+    }
 
-                // Dashboard sample
-                `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .dashboard {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .stat-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            color: white;
-        }
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-    </style>
-</head>
-<body>
-    <div class="dashboard">
-        <div class="header">
-            <h1>Analytics Dashboard</h1>
-            <p>Your business metrics at a glance</p>
-        </div>
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">1,234</div>
-                <div class="stat-label">Active Users</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">$5,678</div>
-                <div class="stat-label">Revenue</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">89</div>
-                <div class="stat-label">Orders</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">12.3%</div>
-                <div class="stat-label">Conversion</div>
-            </div>
-        </div>
-    </div>
-</body>
-</html>`
-            ];
-            
-            const randomSample = samples[Math.floor(Math.random() * samples.length)];
-            document.getElementById('htmlCode').value = randomSample;
-            updatePreview();
-        }
+    // Export ZIP
+    function exportZip(){
+      const zip=new JSZip();
+      zip.file('index.html',document.getElementById('htmlCode').value);
+      zip.file('style.css',document.getElementById('cssCode').value);
+      zip.file('script.js',document.getElementById('jsCode').value);
+      zip.generateAsync({type:'blob'}).then(content=>{
+        const a=document.createElement('a');
+        a.href=URL.createObjectURL(content);
+        a.download='project.zip';
+        a.click();
+      });
+    }
 
-        // Clear editor
-        function clearEditor() {
-            if (confirm('Are you sure you want to clear all code?')) {
-                document.getElementById('htmlCode').value = '';
-                updatePreview();
-            }
-        }
-
-        // Import HTML file
-        function importFile() {
-            document.getElementById('fileInput').click();
-        }
-
-        // Handle file import
-        function handleFileImport(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('htmlCode').value = e.target.result;
-                    updatePreview();
-                };
-                reader.readAsText(file);
-            }
-        }
-
-        // Export HTML file
-        function exportFile() {
-            const code = document.getElementById('htmlCode').value;
-            const blob = new Blob([code], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'my-html-file.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // Show privacy settings modal
-        function showPrivacySettings() {
-            document.getElementById('privacyModal').style.display = 'block';
-        }
-
-        // Show about modal
-        function showAbout() {
-            document.getElementById('aboutModal').style.display = 'block';
-        }
-
-        // Close modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-    </script>
+    // Shortcuts
+    document.addEventListener('keydown',e=>{
+      if(e.ctrlKey&&e.key==='s'){e.preventDefault();exportFile();}
+      if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();updatePreview();}
+    });
+  </script>
 </body>
 </html>
