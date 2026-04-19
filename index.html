@@ -1,78 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML Online Viewer - Pro Edition</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <style>
-    * {margin:0;padding:0;box-sizing:border-box;}
-    body {
-      font-family: Arial, sans-serif;
-      background:#f5f5f5;
-      display:flex;
-      height:100vh;
-      overflow:hidden;
-    }
-    body.dark { background:#1e1e1e; color:#eee; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Online Viewer - Pro Edition</title>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Sidebar */
-    .sidebar {width:180px;background:#2c3e50;color:white;display:flex;flex-direction:column;}
-    .sidebar-header {padding:15px;text-align:center;background:#34495e;font-weight:bold;}
-    .sidebar-item {padding:10px 15px;border-bottom:1px solid #34495e;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;}
-    .sidebar-item:hover {background:#34495e;}
-    .sidebar-footer {margin-top:auto;padding:10px;font-size:11px;color:#bdc3c7;text-align:center;}
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    /* Main */
-    .main-content {flex:1;display:flex;flex-direction:column;}
-    
-    .editor-container {flex:1;display:flex;overflow:hidden;}
+        body.dark {
+            background: #1e1e1e;
+            color: #eee;
+        }
 
-    /* Tabs */
-    .tabs {display:flex;border-bottom:1px solid #ccc;background:#ecf0f1;}
-    .tabs button {flex:1;padding:8px;border:none;cursor:pointer;background:#ecf0f1;}
-    .tabs button.active {background:#ddd;font-weight:bold;}
+        /* Sidebar */
+        .sidebar {
+            width: 180px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Editor / Preview */
-    .code-section {width:50%;display:flex;flex-direction:column;}
-    #dragbar {width:5px;cursor:col-resize;background:#ccc;}
-    .preview-section {flex:1;display:flex;flex-direction:column;}
-    .section-header {padding:10px;font-size:13px;font-weight:bold;border-bottom:1px solid #ccc;background:#ecf0f1;}
-    textarea {flex:1;border:none;outline:none;font-family:monospace;font-size:12px;padding:10px;resize:none;background:#fafafa;}
-    body.dark textarea {background:#2d2d2d;color:#eee;}
-    iframe {flex:1;border:none;}
+        .sidebar-header {
+            padding: 15px;
+            text-align: center;
+            background: #34495e;
+            font-weight: bold;
+        }
 
-    @media(max-width:768px){.sidebar{width:60px}.sidebar-item span:last-child{display:none}#dragbar{display:none}.code-section,.preview-section{width:100%}}
-  </style>
+        .sidebar-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-item:hover {
+            background: #34495e;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 10px;
+            font-size: 11px;
+            color: #bdc3c7;
+            text-align: center;
+        }
+
+        /* Main */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            background: #ecf0f1;
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            cursor: pointer;
+            background: #ecf0f1;
+        }
+
+        .tabs button.active {
+            background: #ddd;
+            font-weight: bold;
+        }
+
+        /* Editor / Preview */
+        .code-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #dragbar {
+            width: 5px;
+            cursor: col-resize;
+            background: #ccc;
+        }
+
+        .preview-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            padding: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+            background: #ecf0f1;
+        }
+
+        textarea {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 10px;
+            resize: none;
+            background: #fafafa;
+        }
+
+        body.dark textarea {
+            background: #2d2d2d;
+            color: #eee;
+        }
+
+        iframe {
+            flex: 1;
+            border: none;
+        }
+
+        @media(max-width:768px) {
+            .sidebar {
+                width: 60px
+            }
+
+            .sidebar-item span:last-child {
+                display: none
+            }
+
+            #dragbar {
+                display: none
+            }
+
+            .code-section,
+            .preview-section {
+                width: 100%
+            }
+        }
+    </style>
 </head>
-<body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="sidebar-header">HTML Viewer</div>
-    <div class="sidebar-item" onclick="toggleDarkMode()">🌙 <span>Dark Mode</span></div>
-    <div class="sidebar-item" onclick="copyCode()">📋 <span>Copy Code</span></div>
-    <div class="sidebar-item" onclick="insertSnippet('button')">🔘 <span>Insert Button</span></div>
-    <div class="sidebar-item" onclick="insertSnippet('form')">📄 <span>Insert Form</span></div>
-    <div class="sidebar-item" onclick="insertSnippet('navbar')">📑 <span>Insert Navbar</span></div>
-    <div class="sidebar-item"><input type="color" onchange="insertColor(this.value)"></div>
-    <div class="sidebar-item" onclick="validateCode()">✅ <span>Validate</span></div>
-    <div class="sidebar-item" onclick="exportFile()">📤 <span>Export HTML</span></div>
-    <div class="sidebar-item" onclick="exportZip()">🗜 <span>Export ZIP</span></div>
-    <div class="sidebar-footer">© 2025 OnlineViewer.net</div>
-  </div>
 
-  <!-- Main -->
-  <div class="main-content">
-    <div class="editor-container">
-      <!-- Code Section -->
-      <div class="code-section" id="editorPane">
-        <div class="tabs">
-          <button id="tab-html" onclick="switchTab('html')">HTML</button>
-          <button id="tab-css" onclick="switchTab('css')">CSS</button>
-          <button id="tab-js" onclick="switchTab('js')">JS</button>
-        </div>
-        <textarea id="htmlCode"><!DOCTYPE html>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">HTML Viewer</div>
+        <div class="sidebar-item" onclick="toggleDarkMode()">🌙 <span>Dark Mode</span></div>
+        <div class="sidebar-item" onclick="copyCode()">📋 <span>Copy Code</span></div>
+        <div class="sidebar-item" onclick="insertSnippet('button')">🔘 <span>Insert Button</span></div>
+        <div class="sidebar-item" onclick="insertSnippet('form')">📄 <span>Insert Form</span></div>
+        <div class="sidebar-item" onclick="insertSnippet('navbar')">📑 <span>Insert Navbar</span></div>
+        <div class="sidebar-item" onclick="validateCode()">✅ <span>Validate</span></div>
+        <div class="sidebar-item" onclick="exportFile()">📤 <span>Export HTML</span></div>
+        <div class="sidebar-item" onclick="exportZip()">🗜 <span>Export ZIP</span></div>
+        <div class="sidebar-footer">© stefwxters.github.io/online-html-viewer/</div>
+    </div>
+
+    <!-- Main -->
+    <div class="main-content">
+        <div class="editor-container">
+            <!-- Code Section -->
+            <div class="code-section" id="editorPane">
+                <div class="tabs">
+                    <button id="tab-html" onclick="switchTab('html')">HTML</button>
+                    <button id="tab-css" onclick="switchTab('css')">CSS</button>
+                    <button id="tab-js" onclick="switchTab('js')">JS</button>
+                </div>
+                <textarea id="htmlCode"><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -82,128 +203,129 @@
   <h1>Hello World</h1>
 </body>
 </html></textarea>
-        <textarea id="cssCode" style="display:none;">body {font-family:Arial;}</textarea>
-        <textarea id="jsCode" style="display:none;">console.log('Hello JS')</textarea>
-      </div>
-      <div id="dragbar"></div>
-      <!-- Preview -->
-      <div class="preview-section">
-        <div class="section-header">Preview</div>
-        <iframe id="preview"></iframe>
-      </div>
+                <textarea id="cssCode" style="display:none;">body {font-family:Arial;}</textarea>
+                <textarea id="jsCode" style="display:none;">console.log('Hello JS')</textarea>
+            </div>
+            <div id="dragbar"></div>
+            <!-- Preview -->
+            <div class="preview-section">
+                <div class="section-header">Preview</div>
+                <iframe id="preview"></iframe>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Switch Tabs
-    function switchTab(tab){
-      ['html','css','js'].forEach(t=>{
-        document.getElementById(t+'Code').style.display = (t===tab)?'block':'none';
-        document.getElementById('tab-'+t).classList.toggle('active', t===tab);
-      });
-    }
-    switchTab('html');
+    <script>
+        // Switch Tabs
+        function switchTab(tab) {
+            ['html', 'css', 'js'].forEach(t => {
+                document.getElementById(t + 'Code').style.display = (t === tab) ? 'block' : 'none';
+                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+            });
+        }
+        switchTab('html');
 
-    // Update Preview
-    function updatePreview(){
-      const html=document.getElementById('htmlCode').value;
-      const css=`<style>${document.getElementById('cssCode').value}</style>`;
-      const js=`<script>${document.getElementById('jsCode').value}<\/script>`;
-      const code=`${html}${css}${js}`;
-      const blob=new Blob([code],{type:'text/html'});
-      const url=URL.createObjectURL(blob);
-      document.getElementById('preview').src=url;
-      setTimeout(()=>URL.revokeObjectURL(url),1000);
-    }
+        // Update Preview
+        function updatePreview() {
+            const html = document.getElementById('htmlCode').value;
+            const css = `<style>${document.getElementById('cssCode').value}</style>`;
+            const js = `<script>${document.getElementById('jsCode').value}<\/script>`;
+            const code = `${html}${css}${js}`;
+            const blob = new Blob([code], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            document.getElementById('preview').src = url;
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
 
-    // Auto Save + Preview
-    ['htmlCode','cssCode','jsCode'].forEach(id=>{
-      const el=document.getElementById(id);
-      el.value=localStorage.getItem(id)||el.value;
-      el.addEventListener('input',()=>{
-        localStorage.setItem(id,el.value);
-        updatePreview();
-      });
-    });
-    document.addEventListener('DOMContentLoaded',updatePreview);
+        // Auto Save + Preview
+        ['htmlCode', 'cssCode', 'jsCode'].forEach(id => {
+            const el = document.getElementById(id);
+            el.value = localStorage.getItem(id) || el.value;
+            el.addEventListener('input', () => {
+                localStorage.setItem(id, el.value);
+                updatePreview();
+            });
+        });
+        document.addEventListener('DOMContentLoaded', updatePreview);
 
-    // Dark Mode
-    function toggleDarkMode(){
-      document.body.classList.toggle('dark');
-      localStorage.setItem('darkMode',document.body.classList.contains('dark'));
-    }
-    if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark');
+        // Dark Mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+        }
+        if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
 
-    // Resizable Panels
-    const dragbar=document.getElementById('dragbar');
-    const editorPane=document.getElementById('editorPane');
-    dragbar.addEventListener('mousedown',e=>{
-      document.onmousemove=e=>{editorPane.style.width=e.pageX+'px';};
-      document.onmouseup=()=>document.onmousemove=null;
-    });
+        // Resizable Panels
+        const dragbar = document.getElementById('dragbar');
+        const editorPane = document.getElementById('editorPane');
+        dragbar.addEventListener('mousedown', e => {
+            document.onmousemove = e => { editorPane.style.width = e.pageX + 'px'; };
+            document.onmouseup = () => document.onmousemove = null;
+        });
 
-    // Snippets
-    function insertSnippet(type){
-      const editor=document.getElementById('htmlCode');
-      const snippets={
-        button:`<button class='btn'>Click me</button>`,
-        form:`<form><input type='text' placeholder='Name'><button>Submit</button></form>`,
-        navbar:`<nav><a href='#'>Home</a> | <a href='#'>About</a></nav>`
-      };
-      editor.value+='\n'+snippets[type];
-      updatePreview();
-    }
+        // Snippets
+        function insertSnippet(type) {
+            const editor = document.getElementById('htmlCode');
+            const snippets = {
+                button: `<button class='btn'>Click me</button>`,
+                form: `<form><input type='text' placeholder='Name'><button>Submit</button></form>`,
+                navbar: `<nav><a href='#'>Home</a> | <a href='#'>About</a></nav>`
+            };
+            editor.value += '\n' + snippets[type];
+            updatePreview();
+        }
 
-    // Insert Color
-    function insertColor(color){
-      const editor=document.getElementById('htmlCode');
-      editor.value+=color;
-      updatePreview();
-    }
+        // Insert Color
+        function insertColor(color) {
+            const editor = document.getElementById('htmlCode');
+            editor.value += color;
+            updatePreview();
+        }
 
-    // Copy Code
-    function copyCode(){
-      const text=document.getElementById('htmlCode').value;
-      navigator.clipboard.writeText(text).then(()=>alert('Code copied!'));
-    }
+        // Copy Code
+        function copyCode() {
+            const text = document.getElementById('htmlCode').value;
+            navigator.clipboard.writeText(text).then(() => alert('Code copied!'));
+        }
 
-    // Validate Code
-    async function validateCode(){
-      const code=document.getElementById('htmlCode').value;
-      const res=await fetch('https://validator.w3.org/nu/?out=json',{method:'POST',headers:{'Content-Type':'text/html; charset=utf-8'},body:code});
-      const data=await res.json();
-      alert(data.messages.map(m=>`${m.type}: ${m.message}`).join('\n')||'No issues found');
-    }
+        // Validate Code
+        async function validateCode() {
+            const code = document.getElementById('htmlCode').value;
+            const res = await fetch('https://validator.w3.org/nu/?out=json', { method: 'POST', headers: { 'Content-Type': 'text/html; charset=utf-8' }, body: code });
+            const data = await res.json();
+            alert(data.messages.map(m => `${m.type}: ${m.message}`).join('\n') || 'No issues found');
+        }
 
-    // Export HTML
-    function exportFile(){
-      const code=document.getElementById('htmlCode').value;
-      const blob=new Blob([code],{type:'text/html'});
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;a.download='my-html-file.html';a.click();
-      URL.revokeObjectURL(url);
-    }
+        // Export HTML
+        function exportFile() {
+            const code = document.getElementById('htmlCode').value;
+            const blob = new Blob([code], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'my-html-file.html'; a.click();
+            URL.revokeObjectURL(url);
+        }
 
-    // Export ZIP
-    function exportZip(){
-      const zip=new JSZip();
-      zip.file('index.html',document.getElementById('htmlCode').value);
-      zip.file('style.css',document.getElementById('cssCode').value);
-      zip.file('script.js',document.getElementById('jsCode').value);
-      zip.generateAsync({type:'blob'}).then(content=>{
-        const a=document.createElement('a');
-        a.href=URL.createObjectURL(content);
-        a.download='project.zip';
-        a.click();
-      });
-    }
+        // Export ZIP
+        function exportZip() {
+            const zip = new JSZip();
+            zip.file('index.html', document.getElementById('htmlCode').value);
+            zip.file('style.css', document.getElementById('cssCode').value);
+            zip.file('script.js', document.getElementById('jsCode').value);
+            zip.generateAsync({ type: 'blob' }).then(content => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(content);
+                a.download = 'project.zip';
+                a.click();
+            });
+        }
 
-    // Shortcuts
-    document.addEventListener('keydown',e=>{
-      if(e.ctrlKey&&e.key==='s'){e.preventDefault();exportFile();}
-      if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();updatePreview();}
-    });
-  </script>
+        // Shortcuts
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); exportFile(); }
+            if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); updatePreview(); }
+        });
+    </script>
 </body>
+
 </html>
