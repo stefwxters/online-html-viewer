@@ -7,7 +7,6 @@
     <title>HTML Online Viewer - Pro Edition</title>
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -148,6 +147,10 @@
         }
 
         @media(max-width:768px) {
+            .editor-container {
+                flex-direction: column;
+            }
+
             .sidebar {
                 width: 60px
             }
@@ -230,11 +233,9 @@
             const html = document.getElementById('htmlCode').value;
             const css = `<style>${document.getElementById('cssCode').value}</style>`;
             const js = `<script>${document.getElementById('jsCode').value}<\/script>`;
-            const code = `${html}${css}${js}`;
-            const blob = new Blob([code], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            document.getElementById('preview').src = url;
-            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+            // Inject directly into the iframe without creating Blobs
+            document.getElementById('preview').srcdoc = `${html}${css}${js}`;
         }
 
         // Auto Save + Preview
@@ -258,9 +259,15 @@
         // Resizable Panels
         const dragbar = document.getElementById('dragbar');
         const editorPane = document.getElementById('editorPane');
+        const iframe = document.getElementById('preview');
+
         dragbar.addEventListener('mousedown', e => {
+            iframe.style.pointerEvents = 'none'; // Stop iframe from stealing the mouse
             document.onmousemove = e => { editorPane.style.width = e.pageX + 'px'; };
-            document.onmouseup = () => document.onmousemove = null;
+            document.onmouseup = () => {
+                document.onmousemove = null;
+                iframe.style.pointerEvents = 'auto'; // Restore normal behavior
+            };
         });
 
         // Snippets
@@ -327,5 +334,6 @@
         });
     </script>
 </body>
+<script async=true src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 </html>
