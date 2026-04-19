@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML Online Viewer - Pro Edition</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌐%3C/text%3E%3C/svg%3E">
     <style>
         :root {
             --bg-primary: #f5f5f5;
@@ -27,7 +29,11 @@
             --editor-bg: #2d2d2d;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -59,7 +65,7 @@
 
         .sidebar-item {
             padding: 12px 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
             transition: background 0.2s;
             display: flex;
@@ -68,51 +74,124 @@
             font-size: 14px;
         }
 
-        .sidebar-item:hover { background: var(--bg-header); }
+        .sidebar-item:hover {
+            background: var(--bg-header);
+        }
 
         /* Main Content */
-        .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
 
-        .editor-container { flex: 1; display: flex; overflow: hidden; position: relative; }
+        .editor-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
 
         /* Sections */
-        .code-section { width: 50%; display: flex; flex-direction: column; min-width: 100px; }
-        
+        .code-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
+        }
+
         #dragbar {
             width: 6px;
             cursor: col-resize;
             background: var(--border-color);
             transition: background 0.2s;
         }
-        #dragbar:hover { background: var(--accent); }
 
-        .preview-section { flex: 1; display: flex; flex-direction: column; min-width: 100px; }
+        #dragbar:hover {
+            background: var(--accent);
+        }
+
+        .preview-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
+        }
 
         /* Tabs */
-        .tabs { display: flex; background: var(--bg-header); }
-        .tabs button {
-            flex: 1; padding: 10px; border: none; cursor: pointer;
-            background: transparent; color: white; opacity: 0.6;
+        .tabs {
+            display: flex;
+            background: var(--bg-header);
         }
-        .tabs button.active { opacity: 1; background: var(--editor-bg); color: var(--text-main); }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: white;
+            opacity: 0.6;
+        }
+
+        .tabs button.active {
+            opacity: 1;
+            background: var(--editor-bg);
+            color: var(--text-main);
+        }
 
         textarea {
-            flex: 1; border: none; outline: none; padding: 15px;
-            font-family: 'Fira Code', monospace; font-size: 13px;
-            resize: none; background: var(--editor-bg); color: var(--text-main);
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            resize: none;
+            background: var(--editor-bg);
+            color: var(--text-main);
         }
 
-        iframe { flex: 1; border: none; background: white; }
+        iframe {
+            flex: 1;
+            border: none;
+            background: white;
+        }
 
         @media(max-width: 768px) {
-            .editor-container { flex-direction: column; }
-            .code-section, .preview-section { width: 100% !important; height: 50%; }
-            #dragbar { display: none; }
-            .sidebar { width: 60px; }
-            .sidebar span { display: none; }
+            .editor-container {
+                flex-direction: column;
+            }
+
+            .code-section,
+            .preview-section {
+                width: 100% !important;
+                height: 50%;
+            }
+
+            #dragbar {
+                display: none;
+            }
+
+            .sidebar {
+                width: 60px;
+            }
+
+            .sidebar span {
+                display: none;
+            }
+
+            .sidebar-header {
+                font-size: 10px;
+                text-align: center;
+                padding: 10px;
+            }
+
         }
     </style>
 </head>
+
 <body>
 
     <div class="sidebar">
@@ -165,7 +244,7 @@
             const css = `<style>${document.getElementById('cssCode').value}</style>`;
             const js = `<script>${document.getElementById('jsCode').value}<\/script>`;
             const combined = `${html}${css}${js}`;
-            
+
             const iframe = document.getElementById('preview');
             // Using srcdoc is faster than blobs for small snippets
             iframe.srcdoc = combined;
@@ -187,7 +266,7 @@
             const el = document.getElementById(type + 'Code');
             const saved = localStorage.getItem(type + 'Code');
             el.value = saved || state.defaults[type];
-            
+
             el.addEventListener('input', () => {
                 localStorage.setItem(type + 'Code', el.value);
                 debouncedUpdate();
@@ -221,7 +300,7 @@
                 // Calculation: Mouse pos - Sidebar width = actual desired editor width
                 const sidebarWidth = sidebar.offsetWidth;
                 let newWidth = e.clientX - sidebarWidth;
-                
+
                 // Constraints
                 if (newWidth > 100 && newWidth < (window.innerWidth - 300)) {
                     editorPane.style.width = newWidth + 'px';
@@ -253,13 +332,13 @@
                 button: `<button>Click Me</button>`,
                 form: `<form>\n  <input type="text" placeholder="Name">\n  <button>Send</button>\n</form>`
             };
-            
+
             // Insert at cursor position instead of appending at end
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const text = editor.value;
             editor.value = text.substring(0, start) + snippets[type] + text.substring(end);
-            
+
             switchTab('html');
             updatePreview();
         }
@@ -299,7 +378,7 @@
             zip.file("index.html", document.getElementById('htmlCode').value);
             zip.file("style.css", document.getElementById('cssCode').value);
             zip.file("script.js", document.getElementById('jsCode').value);
-            zip.generateAsync({type:"blob"}).then(content => {
+            zip.generateAsync({ type: "blob" }).then(content => {
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(content);
                 a.download = "project.zip";
@@ -308,4 +387,5 @@
         }
     </script>
 </body>
+
 </html>
