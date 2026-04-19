@@ -80,6 +80,11 @@
             background: var(--bg-header);
         }
 
+        .sidebar-item:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: -2px;
+        }
+
         /* Main Content */
         .main-content {
             flex: 1;
@@ -111,6 +116,11 @@
         }
 
         #dragbar:hover {
+            background: var(--accent);
+        }
+
+        #dragbar:focus {
+            outline: 2px solid var(--accent);
             background: var(--accent);
         }
 
@@ -196,34 +206,34 @@
 
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar" role="navigation" aria-label="Main menu">
         <div class="sidebar-header">HTML Viewer</div>
-        <div class="sidebar-item" onclick="toggleDarkMode()">🌙 <span>Dark Mode</span></div>
-        <div class="sidebar-item" onclick="copyCode()">📋 <span>Copy Code</span></div>
-        <div class="sidebar-item" onclick="insertSnippet('button')">🔘 <span>Button</span></div>
-        <div class="sidebar-item" onclick="insertSnippet('form')">📄 <span>Form</span></div>
-        <div class="sidebar-item" onclick="validateCode()">✅ <span>Validate</span></div>
-        <div class="sidebar-item" onclick="exportFile()">📤 <span>Export HTML</span></div>
-        <div class="sidebar-item" onclick="exportZip()">🗜 <span>Export ZIP</span></div>
+        <div class="sidebar-item" onclick="toggleDarkMode()" role="button" tabindex="0" aria-label="Toggle dark mode">🌙 <span>Dark Mode</span></div>
+        <div class="sidebar-item" onclick="copyCode()" role="button" tabindex="0" aria-label="Copy code">📋 <span>Copy Code</span></div>
+        <div class="sidebar-item" onclick="insertSnippet('button')" role="button" tabindex="0" aria-label="Insert button snippet">🔘 <span>Button</span></div>
+        <div class="sidebar-item" onclick="insertSnippet('form')" role="button" tabindex="0" aria-label="Insert form snippet">📄 <span>Form</span></div>
+        <div class="sidebar-item" onclick="validateCode()" role="button" tabindex="0" aria-label="Validate HTML code">✅ <span>Validate</span></div>
+        <div class="sidebar-item" onclick="exportFile()" role="button" tabindex="0" aria-label="Export as HTML file">📤 <span>Export HTML</span></div>
+        <div class="sidebar-item" onclick="exportZip()" role="button" tabindex="0" aria-label="Export as ZIP file">🗜 <span>Export ZIP</span></div>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" role="main">
         <div class="editor-container">
             <div class="code-section" id="editorPane">
-                <div class="tabs">
-                    <button id="tab-html" class="active" onclick="switchTab('html')">HTML</button>
-                    <button id="tab-css" onclick="switchTab('css')">CSS</button>
-                    <button id="tab-js" onclick="switchTab('js')">JS</button>
+                <div class="tabs" role="tablist" aria-label="Code editor tabs">
+                    <button id="tab-html" class="active" onclick="switchTab('html')" role="tab" aria-selected="true" aria-controls="htmlCode">HTML</button>
+                    <button id="tab-css" onclick="switchTab('css')" role="tab" aria-selected="false" aria-controls="cssCode">CSS</button>
+                    <button id="tab-js" onclick="switchTab('js')" role="tab" aria-selected="false" aria-controls="jsCode">JS</button>
                 </div>
-                <textarea id="htmlCode" placeholder="HTML..."></textarea>
-                <textarea id="cssCode" style="display:none;" placeholder="CSS..."></textarea>
-                <textarea id="jsCode" style="display:none;" placeholder="JS..."></textarea>
+                <textarea id="htmlCode" placeholder="HTML..." role="tabpanel" aria-labelledby="tab-html"></textarea>
+                <textarea id="cssCode" style="display:none;" placeholder="CSS..." role="tabpanel" aria-labelledby="tab-css"></textarea>
+                <textarea id="jsCode" style="display:none;" placeholder="JS..." role="tabpanel" aria-labelledby="tab-js"></textarea>
             </div>
 
-            <div id="dragbar"></div>
+            <div id="dragbar" role="separator" aria-orientation="vertical" aria-label="Resize editor and preview panels" tabindex="0"></div>
 
-            <div class="preview-section">
-                <iframe id="preview" title="Preview" sandbox="allow-scripts"></iframe>
+            <div class="preview-section" role="region" aria-label="Preview output">
+                <iframe id="preview" title="Live preview" sandbox="allow-scripts"></iframe>
             </div>
         </div>
     </div>
@@ -283,9 +293,35 @@
             state.activeTab = tab;
             ['html', 'css', 'js'].forEach(t => {
                 document.getElementById(t + 'Code').style.display = (t === tab) ? 'block' : 'none';
-                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+                const tabButton = document.getElementById('tab-' + t);
+                tabButton.classList.toggle('active', t === tab);
+                tabButton.setAttribute('aria-selected', t === tab);
             });
         }
+
+        // --- Keyboard Support for Sidebar ---
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    item.click();
+                }
+            });
+        });
+
+        // --- Keyboard Support for Dragbar ---
+        document.getElementById('dragbar').addEventListener('keydown', (e) => {
+            const editorPane = document.getElementById('editorPane');
+            const currentWidth = editorPane.offsetWidth;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                editorPane.style.width = Math.max(100, currentWidth - 10) + 'px';
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                editorPane.style.width = Math.min(window.innerWidth - 300, currentWidth + 10) + 'px';
+            }
+        });
 
         // --- Slider Bug Fix ---
 
